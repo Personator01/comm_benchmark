@@ -9,11 +9,15 @@ let bci = new BCI2000Remote(new BCI2000Connection()) in
 bci.connection.StartOperator "../../bci2000/prog/Operator";
 bci.connection.Connect();
 
+bci.AddEvent("ev", 1)
+
 bci.StartupModules <| Map [
-  ("SignalGenerator", ["LogKeyboard=1"; "SpinningWheel=1"; "ShowDisplayStatistics=1"]);
+  ("SignalGenerator", null);
   ("DummySignalProcessing", null);
-  ("StimulusPresentation", null);
+  ("DummyApplication", null);
   ]
+
+bci.Visualize "ev"
 
 bci.WaitForSystemState BCI2000Remote.SystemState.Running;
 
@@ -29,3 +33,5 @@ let rec repeat () =
     Thread.Sleep(1000);
     repeat ();
   | _ -> ();
+
+repeat ();
